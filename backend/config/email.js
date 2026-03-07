@@ -9,8 +9,8 @@ console.log("📧 Email config:", {
 });
 
 export const transporter = nodemailer.createTransport({
-  host: "smtp.ethereal.email",
-  port: 587,
+  host: process.env.SMTP_HOST || "smtp.ethereal.email",
+  port:process.env.SMTP_PORT || 587,
   auth: { user: emailUser, pass: emailPass },
 });
 
