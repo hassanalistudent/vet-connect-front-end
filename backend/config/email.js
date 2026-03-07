@@ -1,23 +1,28 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+import dotenv from "dotenv";
 
-// ✅ Use Gmail credentials from Railway environment variables
-const emailUser = process.env.EMAIL_USER || "hassan.ali.datanalyst@gmail.com";
-const emailPass = process.env.EMAIL_PASS || "osxnsuysjvxswurg"; // no spaces
+dotenv.config();
 
-console.log("📧 Email config:", {
-  service: "Gmail",
-  userSet: !!emailUser,
+// 🔍 Debug: confirm API key is loaded (never print the key itself)
+console.log("📧 RESEND CONFIG:", {
+  apiKeyLoaded: !!process.env.RESEND_API_KEY,
 });
 
-// ✅ Gmail SMTP transporter
-export const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "smtp.gmail.com",
-  port: process.env.SMTP_PORT || 587,   // 587 for TLS, 465 for SSL
-  secure: false, // true if you use port 465
-  auth: {
-    user: emailUser,
-    pass: emailPass,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-export { emailUser };
+export const sendEmail = async ({ to, subject, html }) => {
+  try {
+    const response = await resend.emails.send({
+      from: "VetConnect <onboarding@resend.dev>",
+      to,
+      subject,
+      html,
+    });
+
+    console.log("📧 Email sent:", response);
+    return response;
+  } catch (error) {
+    console.error("❌ Resend Error:", error);
+    throw new Error("Failed to send email");
+  }
+};
