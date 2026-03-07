@@ -23,11 +23,20 @@ connectDB();
 
 const app = express();
 
-// ✅ CORS - FIXED (Add BEFORE all middleware/routes)
 app.use(cors({
-  origin: ["http://localhost:5173", "https://vetconnecthub.com"], // Your Vite frontend
-  credentials: true
+  origin: [
+    "http://localhost:5173",
+    "https://vetconnecthub.com",
+    "https://www.vetconnecthub.com"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// Allow preflight requests
+app.options("*", cors());
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
