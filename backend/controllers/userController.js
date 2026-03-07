@@ -35,11 +35,7 @@ const createUser = asyncHandler(async (req, res) => {
 
   await newUser.save();
 
-  // Generate verification token and send email
-  const token = await setVerificationToken(newUser);
-  await sendVerificationEmail(newUser.email, token);
-
-  res.status(201).json({
+   res.status(201).json({
     message: "Signup successful. Please check your email to verify your account.",
     _id: newUser._id,
     fullName: newUser.fullName,
@@ -48,6 +44,12 @@ const createUser = asyncHandler(async (req, res) => {
     role: newUser.role,
     isVerified: newUser.isVerified,
   });
+
+  // Generate verification token and send email
+  const token = await setVerificationToken(newUser);
+  await sendVerificationEmail(newUser.email, token);
+
+
 });
 
 // ✅ Login user with verification check

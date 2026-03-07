@@ -54,6 +54,12 @@ const createAppointment = asyncHandler(async (req, res) => {
   const doctor = await User.findById(doctorId);
   const owner = await User.findById(effectiveOwnerId);
 
+   res.status(201).json({
+    success: true,
+    message: "Appointment created successfully",
+    appointment,
+  });
+
   // Send email to doctor
   if (doctor && doctor.email) {
     await sendAppointmentEmail(
@@ -64,11 +70,7 @@ const createAppointment = asyncHandler(async (req, res) => {
     );
   }
 
-  res.status(201).json({
-    success: true,
-    message: "Appointment created successfully",
-    appointment,
-  });
+ 
 });
 
 // -------------------- READ (R) --------------------
