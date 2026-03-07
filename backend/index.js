@@ -25,7 +25,7 @@ const app = express();
 
 // ✅ CORS - FIXED (Add BEFORE all middleware/routes)
 app.use(cors({
-  origin: ["http://localhost:5173", "https://vettconnect.netlify.app"], // Your Vite frontend
+  origin: ["http://localhost:5173", "https://vetconnecthub.com"], // Your Vite frontend
   credentials: true
 }));
 
