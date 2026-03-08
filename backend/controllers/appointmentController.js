@@ -165,7 +165,14 @@ const getAppointmentById = asyncHandler(async (req, res) => {
   const appointment = await DoctorAppointment.findById(req.params.id)
     .populate("doctorId", "fullName email phone role")
     .populate("petId")
-    .populate("ownerId", "fullName email phone role");
+    .populate({
+      path: "ownerId",
+      select: "fullName email phone role petOwnerProfile",
+      populate: {
+        path: "petOwnerProfile",
+        select: "address"
+      }
+    });
 
   if (!appointment) {
     res.status(404);
