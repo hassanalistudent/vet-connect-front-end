@@ -170,6 +170,7 @@ const getAppointmentById = asyncHandler(async (req, res) => {
       select: "fullName email phone role petOwnerProfile",
       populate: {
         path: "petOwnerProfile",
+        model: "PetOwnerProfile",   // explicitly tell Mongoose which model
         select: "address"
       }
     });
